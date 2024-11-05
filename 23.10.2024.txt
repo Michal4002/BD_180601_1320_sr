@@ -8,39 +8,21 @@ mysql> CREATE TABLE postac (
     -> );
 Query OK, 0 rows affected (0.05 sec)
 
-mysql> INSERT INTO postac (nazwa, rodzaj, dat_ur, wiek)
-    -> VALUES ('Bjorn','wiking','1705','35');
-ERROR 1054 (42S22): Unknown column 'dat_ur' in 'field list'
-mysql> INSERT INTO postac (nazwa, rodzaj, data_ur, wiek)
-    -> VALUES ("Bjorn","wiking","1705","35");
-ERROR 1292 (22007): Incorrect date value: '1705' for column 'data_ur' at row 1
-mysql> INSERT INTO postac (nazwa, rodzaj, data_ur, wiek) VALUES ("Bjorn","wiking","12-05-1705","35");
-ERROR 1292 (22007): Incorrect date value: '12-05-1705' for column 'data_ur' at row 1
-mysql> INSERT INTO postac (nazwa, rodzaj, data_ur, wiek) VALUES ('Bjorn','wiking','12-05-1705','35');
-ERROR 1292 (22007): Incorrect date value: '12-05-1705' for column 'data_ur' at row 1
-mysql> INSERT INTO postac (nazwa, rodzaj, data_ur, wiek) VALUES ('Bjorn','wiking',12-05-1705,35);
-ERROR 1292 (22007): Incorrect date value: '-1698' for column 'data_ur' at row 1
-mysql> INSERT INTO postac (nazwa, rodzaj, data_ur, wiek) VALUES ('Bjorn','wiking',12-05-1705,'35');
-ERROR 1292 (22007): Incorrect date value: '-1698' for column 'data_ur' at row 1
 mysql> INSERT INTO postac (nazwa, rodzaj, data_ur, wiek) VALUES ('Bjorn','wiking','1705-05-12','35');
 Query OK, 1 row affected (0.00 sec)
 
-mysql> INSERT INTO postac (nazwa, rodzaj, data_ur, wiek) VALUES ('Drozd','ptak','1701-02-30','4');
-ERROR 1292 (22007): Incorrect date value: '1701-02-30' for column 'data_ur' at row 1
 mysql> INSERT INTO postac (nazwa, rodzaj, data_ur, wiek) VALUES ('Drozd','ptak','1701-02-28','4');
 Query OK, 1 row affected (0.00 sec)
 
 mysql> INSERT INTO postac (nazwa, rodzaj, data_ur, wiek) VALUES ('Tesciowa','kobieta','1617-06-04','88');
 Query OK, 1 row affected (0.00 sec)
 
-mysql> CREATE TABLE walizka (
-    -> id_walizki int AUTO_INCREMENT,
-    -> pojemnosc int,
-    -> kolor enum('rozowy','czerwony','teczowy','zolty'),
-    -> PRIMARY KEY(id_walizki),
-    -> FOREIGN KEY(id_wlasciciela)
-    -> REFERENCES postac(id_postaci)
-    -> );
-ERROR 1072 (42000): Key column 'id_wlasciciela' doesn't exist in table
 mysql> CREATE TABLE walizka ( id_walizki int AUTO_INCREMENT, pojemnosc int, kolor enum('rozowy','czerwony','teczowy','zolty'), PRIMARY KEY(id_walizki), id_wlasciciela int, FOREIGN KEY(id_wlasciciela) REFERENCES postac(id_postaci) );
 Query OK, 0 rows affected (0.03 sec)
+
+mysql> ALTER TABLE walizka
+    -> MODIFY COLUMN kolor ENUM('rozowy','czerwony','teczowy','zolty') DEFAULT 'rozowy';
+Query OK, 0 rows affected (0.21 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
