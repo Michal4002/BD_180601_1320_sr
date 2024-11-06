@@ -1,0 +1,44 @@
+mysql> CREATE TABLE postac (
+    -> id_postaci int AUTO_INCREMENT,
+    -> nazwa varchar(40),
+    -> rodzaj enum('wiking','ptak','kobieta'),
+    -> data_ur date,
+    -> wiek int,
+    -> PRIMARY KEY (id_postaci)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> INSERT INTO postac (nazwa, rodzaj, data_ur, wiek) VALUES ('Bjorn','wiking','1705-05-12','35');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO postac (nazwa, rodzaj, data_ur, wiek) VALUES ('Drozd','ptak','1701-02-28','4');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO postac (nazwa, rodzaj, data_ur, wiek) VALUES ('Tesciowa','kobieta','1617-06-04','88');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> CREATE TABLE walizka ( id_walizki int AUTO_INCREMENT, pojemnosc int, kolor enum('rozowy','czerwony','teczowy','zolty'), PRIMARY KEY(id_walizki), id_wlasciciela int, FOREIGN KEY(id_wlasciciela) REFERENCES postac(id_postaci) );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> ALTER TABLE walizka
+    -> MODIFY COLUMN kolor ENUM('rozowy','czerwony','teczowy','zolty') DEFAULT 'rozowy';
+Query OK, 0 rows affected (0.21 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE izba_z_polami (
+    -> adres_budynku varchar(100),
+    -> nazwa_izby varchar(50),
+    -> metraz int UNSIGNED,
+    -> wlasciciel int,
+    -> PRIMARY KEY (adres_budynku),
+    -> FOREIGN KEY(wlasciciel) REFERENCES postac(id_postaci)
+    -> );
+Query OK, 0 rows affected (0.24 sec)
+
+mysql> ALTER TABLE izba_z_polami ADD COLUMN kolor_izby varchar(50) DEFAULT 'czarny' AFTER metraz;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO izba_z_polami (adres_budynku, nazwa_izby, metraz, wlasciciel) VALUES ('Gory i lasy','spizarnia','75','1');
+Query OK, 1 row affected (0.01 sec)
+
