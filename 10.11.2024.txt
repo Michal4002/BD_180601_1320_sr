@@ -1,0 +1,73 @@
+mysql> CREATE TABLE Przetwory_z_polami ( 
+id_przetworu int, 
+rok_produkcji int(4) DEFAULT '1654', 
+id_wykonawcy int, 
+zawartosc varchar(100), 
+dodatek varchar(100) DEFAULT 'papryczka_chilli',
+id_konsumenta int, PRIMARY KEY (id_przetworu), 
+FOREIGN KEY(id_wykonawcy) REFERENCES postac(id_postaci), 
+FOREIGN KEY(id_konsumenta) REFERENCES postac(id_postaci) 
+);
+
+mysql> INSERT INTO postac (nazwa, rodzaj, data_ur, wiek)
+    -> VALUES ('Armand','wiking','1700-02-11','40');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO postac (nazwa, rodzaj, data_ur, wiek) VALUES ('Kristoff','wiking','1704-06-18','36');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO postac (nazwa, rodzaj, data_ur, wiek) VALUES ('Clemont','wiking','1699-03-20','41');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO postac (nazwa, rodzaj, data_ur, wiek) VALUES ('Uriel','wiking','1695-09-10','45');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO postac (nazwa, rodzaj, data_ur, wiek) VALUES ('Jess','wiking','1710-07-24','30');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> CREATE TABLE statek_z_polami ( 
+nazwa_statku char(50), 
+rodzaj_statku enum('zaglowy','wioslowy'), 
+data_wodowania date, 
+max_ladownosc int UNSIGNED, 
+PRIMARY KEY(nazwa_statku) 
+);
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> INSERT INTO statek_z_polami (nazwa_statku, rodzaj_statku, data_wodowania, max_ladownosc)
+    -> VALUES('syrena','zaglowy','1740-06-12','1000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO statek_z_polami (nazwa_statku, rodzaj_statku, data_wodowania, max_ladownosc) 
+       VALUES('tryton','wioslowy','1740-06-12','1000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> ALTER TABLE postac
+    -> ADD COLUMN pola varchar(100);
+Query OK, 0 rows affected (0.42 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE postac
+    -> ADD COLUMN statek char(50);
+Query OK, 0 rows affected (0.26 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE postac ADD FOREIGN KEY (statek) REFERENCES statek_z_polami(nazwa_statku);
+Query OK, 8 rows affected (0.38 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE postac SET statek = 'syrena' WHERE id_postaci = 1 AND id_postaci = 5 AND id_postaci = 7;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> UPDATE postac SET statek = 'tryton' WHERE id_postaci = 4 AND id_postaci = 6 AND id_postaci = 8;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> DELETE FROM izba WHERE nazwa_izby = "spizarnia";
+ERROR 1146 (42S02): Table 'mlynczakm.izba' doesn't exist
+mysql> DELETE FROM izba_z_polami WHERE nazwa_izby = "spizarnia";
+Query OK, 1 row affected (0.00 sec)
+
+mysql> DROP TABLE izba_z_polami;
+Query OK, 0 rows affected (0.10 sec)
