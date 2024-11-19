@@ -53,4 +53,55 @@ mysql> ALTER TABLE postac ADD CHECK(data_ur > '640-01-01');
 Query OK, 7 rows affected (0.13 sec)
 Records: 7  Duplicates: 0  Warnings: 0
 
+mysql> ALTER TABLE postac MODIFY rodzaj ENUM('wiking','ptak','kobieta','syrena','potwor');
+Query OK, 7 rows affected (0.11 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE marynarz (
+    -> id_postaci INT AUTO_INCREMENT,
+    -> nazwa VARCHAR(40),
+    -> rodzaj VARCHAR(40),
+    -> data_ur DATE,
+    -> wiek INT,
+    -> pola VARCHAR(100),
+    -> statek CHAR(50),
+    -> pesel INT(11) NOT NULL,
+    -> PRIMARY KEY(id_postaci)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+mysql> INSERT INTO marynarz
+    -> SELECT * FROM postac
+    -> WHERE statek = "tryton";
+Query OK, 0 rows affected (0.00 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE postac SET statek = "";
+Query OK, 6 rows affected (0.01 sec)
+Rows matched: 8  Changed: 6  Warnings: 0
+
+mysql> DELETE FROM postac WHERE rodzaj = "wiking" LIMIT 1;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> DELETE FROM statek;
+ERROR 1146 (42S02): Table 'mlynczakm.statek' doesn't exist
+mysql> DELETE FROM statek_z_polami;
+Query OK, 2 rows affected (0.00 sec)
+
+mysql> DROP TABLE statek_z_polami;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> CREATE TABLE zwierz_z_polami (
+    -> id INT AUTO_INCREMENT,
+    -> nazwa VARCHAR(40),
+    -> wiek INT,
+    -> PRIMARY KEY(id)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO zwierz_z_polami (id, nazwa, wiek)
+    -> SELECT id_postaci, nazwa, wiek FROM postac
+    -> WHERE rodzaj = "ptak" AND rodzaj = "potwor";
+Query OK, 0 rows affected (0.00 sec)
+Records: 0  Duplicates: 0  Warnings: 0
 
