@@ -1,0 +1,68 @@
+mysql> SELECT AVG(waga)FROM kreatura WHERE rodzaj = "wiking";
++-----------+
+| AVG(waga) |
++-----------+
+|   95.1111 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT AVG(waga), COUNT(nazwa) FROM kreatura GROUP BY rodzaj;
++-----------+--------------+
+| AVG(waga) | COUNT(nazwa) |
++-----------+--------------+
+|   95.1111 |            9 |
+| 1050.5000 |            2 |
+|    3.0000 |            1 |
+|    2.0000 |            2 |
+|   41.2500 |            4 |
+|   32.0000 |            1 |
+|      NULL |            1 |
+|      NULL |            3 |
++-----------+--------------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT AVG(1700-01-01 - YEAR(dataUr)) FROM kreatura GROUP BY rodzaj;
++--------------------------------+
+| AVG(1700-01-01 - YEAR(dataUr)) |
++--------------------------------+
+|                        27.5556 |
+|                        22.5000 |
+|                        21.0000 |
+|                        22.5000 |
+|                       206.7500 |
+|                        26.0000 |
+|                       598.0000 |
+|                           NULL |
++--------------------------------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT SUM(waga), rodzaj FROM zasob GROUP BY rodzaj;
++-----------+--------------------+
+| SUM(waga) | rodzaj             |
++-----------+--------------------+
+|    130.00 | jedzenie           |
+|     13.00 | narzedzie          |
+|      9.10 | NULL               |
+|     33.10 | ubranie            |
+|      6.00 | narzedzie zbrodni  |
+|      0.60 | material budowlany |
+|      4.00 | miejsce wypoczynku |
++-----------+--------------------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT AVG(waga), nazwa FROM zasob WHERE ilosc >= 4 GROUP BY nazwa HAVING SUM(waga) > 10;
++-----------+---------------+
+| AVG(waga) | nazwa         |
++-----------+---------------+
+| 30.000000 | skora geparda |
++-----------+---------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT COUNT(nazwa), rodzaj FROM zasob GROUP BY rodzaj HAVING MIN(ilosc) > 1;
++--------------+--------------------+
+| COUNT(nazwa) | rodzaj             |
++--------------+--------------------+
+|            4 | ubranie            |
+|            2 | material budowlany |
++--------------+--------------------+
+2 rows in set (0.00 sec)
