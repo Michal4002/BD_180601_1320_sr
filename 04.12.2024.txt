@@ -1,0 +1,94 @@
+mysql> SELECT ekwipunek.idKreatury, SUM(ilosc) FROM ekwipunek LEFT JOIN kreatura ON ekwipunek.idKreatury = kreatura.i
+dKreatury GROUP BY ekwipunek.idKreatury;
++------------+------------+
+| idKreatury | SUM(ilosc) |
++------------+------------+
+|          1 |         64 |
+|          2 |          4 |
+|          6 |          6 |
+|          3 |          1 |
+|          7 |          2 |
+|         14 |          5 |
+|          5 |         55 |
+|          8 |         12 |
+|         11 |          1 |
+|         13 |          1 |
+|       NULL |         34 |
+|         34 |         34 |
++------------+------------+
+
+mysql> SELECT ekwipunek.idKreatury, zasob.nazwa FROM ekwipunek LEFT JOIN kreatura ON ekwipunek.idKreatury = kreatura.idKreatury LEFT JOIN zasob ON ekwipunek.idZasobu = zasob.idZasobu;
++------------+-------------------+
+| idKreatury | nazwa             |
++------------+-------------------+
+|          1 | kokos             |
+|          1 | stanik            |
+|          1 | buty              |
+|          1 | lisc palmowy      |
+|          1 | siekiera          |
+|          2 | siekiera          |
+|          2 | kokos             |
+|          1 | hamak             |
+|          1 | topor             |
+|          6 | kokos             |
+|          3 | kiel slonia       |
+|          7 | skora geparda     |
+|          7 | dzida             |
+|         14 | nie wiadomo co    |
+|         14 | miotla            |
+|         14 | chatka na drzewie |
+|         14 | ogien do ziania   |
+|          6 | luk               |
+|          5 | kiel slonia       |
+|          8 | pnacza            |
+|         11 | stanik            |
+|          8 | deski             |
+|         13 | opos              |
+|          5 | siekiera          |
+|          5 | pnacza            |
+|          5 | skora geparda     |
+|       NULL | stanik            |
+|          6 | stanik            |
+|         34 | siekiera          |
++------------+-------------------+
+
+mysql> SELECT kreatura.idKreatury FROM kreatura LEFT JOIN ekwipunek ON ekwipunek.idKreatury = kreatura.idKreatury LEFT JOIN zasob ON ekwipunek.idZasobu = zasob.idZasobu WHERE kreatura.idKreatury NOT LIKE ekwipunek.idKreatury ;
+
+mysql> SELECT kreatura.nazwa, zasob.nazwa FROM kreatura INNER JOIN ekwipunek ON kreatura.idKreatury = ekwipunek.idKreatury INNER JOIN zasob ON zasob.idZasobu = ekwipunek.idZasobu WHERE kreatura.rodzaj = 'wiking' AND dataUr BETWEEN '1670
+-01-01' AND '1680-01-01';
++-----------+---------------+
+| nazwa     | nazwa         |
++-----------+---------------+
+| Astrid    | kokos         |
+| Bjorn     | kokos         |
+| Defgard   | siekiera      |
+| Brutal    | siekiera      |
+| Bjorn     | siekiera      |
+| Brutal    | kokos         |
+| Bjorn     | stanik        |
+| Astrid    | stanik        |
+| Bjorn     | buty          |
+| Bjorn     | lisc palmowy  |
+| Defgard   | skora geparda |
+| Ibra      | skora geparda |
+| Defgard   | kiel slonia   |
+| Khorad    | kiel slonia   |
+| Bjorn     | topor         |
+| Ibra      | dzida         |
+| Astrid    | luk           |
+| Defgard   | pnacza        |
+| Bjolkolur | pnacza        |
+| Bjolkolur | deski         |
+| Bjorn     | hamak         |
++-----------+---------------+
+
+mysql> SELECT kreatura.nazwa FROM kreatura INNER JOIN ekwipunek ON kreatura.idKreatury = ekwipunek.idKreatury INNER JOIN zasob ON zasob.idZasobu = ekwipunek.idZasobu WHERE ekwipunek.idKreatury = kreatura.idKreatury AND zasob.rodzaj = 'jedzenie' ORDER BY kreatura.dataUr DESC LIMIT 5;
++---------+
+| nazwa   |
++---------+
+| Astrid  |
+| Szczeki |
+| Brutal  |
+| Bjorn   |
++---------+
+
