@@ -1,0 +1,65 @@
+mysql> SELECT CONCAT(A.nazwa," - ", B.nazwa) FROM kreatura A, kreatura B WHERE A.idKreatury = B.idKreatury - 5;
++----------------------------------+
+| CONCAT(A.nazwa," - ", B.nazwa)   |
++----------------------------------+
+| Bjorn - Astrid                   |
+| Brutal - Ibra                    |
+| Khorad - Bjolkolur               |
+| Birgun - Nemo                    |
+| Defgard - Loko                   |
+| Astrid - Drozd                   |
+| Ibra - Ara                       |
+| Bjolkolur - Szczeki              |
+| Nemo - Tesciowa                  |
+| Loko - Tiki                      |
+| Drozd - Dziadek                  |
+| Ara - sztuczna szczeka tesciowej |
+| Szczeki - Tesciowa dziadka       |
+| Tesciowa - Gollum                |
+| Tiki - Trollik                   |
+| Dziadek - Silacz                 |
++----------------------------------+
+16 rows in set (0.00 sec)
+
+mysql> SELECT rodzaj, AVG(waga) FROM kreatura WHERE rodzaj != "malpa" AND rodzaj != "waz" AND waga < 30 GROUP BY rodzaj;
++---------+-----------+
+| rodzaj  | AVG(waga) |
++---------+-----------+
+| ryba    |    1.0000 |
+| ptak    |    2.0000 |
+| wiedzma |   11.0000 |
++---------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO kreatura SELECT * FROM wikingowie.kreatura;
+Query OK, 23 rows affected (0.09 sec)
+Records: 23  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE uczestnicy LIKE wikingowie.uczestnicy;
+Query OK, 0 rows affected (0.32 sec)
+
+mysql> CREATE TABLE etapy_wyprawy LIKE wikingowie.etapy_wyprawy;
+Query OK, 0 rows affected (0.70 sec)
+
+mysql> CREATE TABLE sektor LIKE wikingowie.sektor;
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> CREATE TABLE wyprawa LIKE wikingowie.wyprawa;
+Query OK, 0 rows affected (0.21 sec)
+
+mysql> INSERT INTO uczestnicy SELECT * FROM wikingowie.uczestnicy;
+Query OK, 18 rows affected (0.08 sec)
+Records: 18  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO etapy_wyprawy SELECT * FROM wikingowie.etapy_wyprawy;
+Query OK, 15 rows affected (0.06 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO sektor SELECT * FROM wikingowie.sektor;
+Query OK, 9 rows affected (0.01 sec)
+Records: 9  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO wyprawa SELECT * FROM wikingowie.wyprawa;
+Query OK, 4 rows affected (0.08 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
