@@ -1,0 +1,103 @@
+mysql> SELECT nazwa FROM kreatura CROSS JOIN uczestnicy ON kreatura.idKreatury = uczestnicy.id_uczestnika WHERE idKreatury NOT IN (SELECT nazwa FROM kreatura CROSS JOIN uczestnicy ON kreatura.idKreatury = uczestnicy.id_uczestnika WHERE idKreatury = id_uczestnika);
++----------------------------+
+| nazwa                      |
++----------------------------+
+| Bjorn                      |
+| Bjorn                      |
+| Khorad                     |
+| Birgun                     |
+| Astrid                     |
+| Ibra                       |
+| Bjolkolur                  |
+| Nemo                       |
+| Loko                       |
+| Drozd                      |
+| Drozd                      |
+| Szczeki                    |
+| Tesciowa                   |
+| Tiki                       |
+| Dziadek                    |
+| Dziadek                    |
+| sztuczna szczeka tesciowej |
+| Tesciowa dziadka           |
++----------------------------+
+18 rows in set, 529 warnings (0.19 sec)
+
+mysql> SELECT nazwa, SUM(ekwipunek.ilosc) FROM wyprawa INNER JOIN uczestnicy ON wyprawa.kierownik = uczestnicy.id_uczestnika INNER JOIN ekwipunek ON wyprawa.kierownik = ekwipunek.idKreatury GROUP BY wyprawa.nazwa;
++-----------------------+----------------------+
+| nazwa                 | SUM(ekwipunek.ilosc) |
++-----------------------+----------------------+
+| Polowanie na tesciowa |                  128 |
+| Poszukiwanie ziecia   |                    5 |
++-----------------------+----------------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT CONCAT(wyprawa.nazwa, " ", COUNT(uczestnicy.id_uczestnika), " ", COUNT(kreatura.nazwa)) FROM wyprawa INNER JOIN uczestnicy ON wyprawa.kierownik = uczestnicy.id_uczestnika INNER JOIN kreatura ON wyprawa.kierownik = kreat
+ra.idKreatury GROUP BY wyprawa.nazwa;
++-----------------------------------------------------------------------------------------+
+| CONCAT(wyprawa.nazwa, " ", COUNT(uczestnicy.id_uczestnika), " ", COUNT(kreatura.nazwa)) |
++-----------------------------------------------------------------------------------------+
+| Polowanie na tesciowa 2 2                                                               |
+| Poszukiwanie ziecia 1 1                                                                 |
+| Nakarm kanibala 2 2                                                                     |
++-----------------------------------------------------------------------------------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT etapy_wyprawy.idEtapu, sektor.nazwa, wyprawa.kierownik FROM etapy_wyprawy INNER JOIN sektor ON etapy_wyprawy.sektor = sektor.id_sektora INNER JOIN wyprawa ON etapy_wyprawy.idWyprawy = wyprawa.id_wyprawy ORDER BY wyprawa.data_rozpoczecia;
++---------+--------------------+-----------+
+| idEtapu | nazwa              | kierownik |
++---------+--------------------+-----------+
+|       1 | Pieczara tesciowej |        14 |
+|       2 | Wulkan             |        14 |
+|       3 | Wioska Kanibali    |        14 |
+|       4 | Pieprzne pole      |        14 |
+|       5 | Chatka dziadka     |        14 |
+|      11 | Chatka dziadka     |        16 |
+|      12 | Pieczara tesciowej |        16 |
+|      13 | Zatoka rekinow     |        16 |
+|      14 | Wulkan             |        16 |
+|      15 | Wioska Kanibali    |        16 |
+|       6 | Kokosowa plaza     |         1 |
+|       7 | Chatka dziadka     |         1 |
+|       8 | Wulkan             |         1 |
+|       9 | Zatoka rekinow     |         1 |
+|      10 | Pieczara tesciowej |         1 |
++---------+--------------------+-----------+
+15 rows in set (0.00 sec)
+
+mysql> SELECT etapy_wyprawy.idEtapu, sektor.nazwa, wyprawa.kierownik FROM etapy_wyprawy INNER JOIN sektor ON etapy_wyprawy.sektor = sektor.id_sektora INNER JOIN wyprawa ON etapy_wyprawy.idWyprawy = wyprawa.id_wyprawy ORDER BY etapy_wyprawy.idEtapu;
++---------+--------------------+-----------+
+| idEtapu | nazwa              | kierownik |
++---------+--------------------+-----------+
+|       1 | Pieczara tesciowej |        14 |
+|       2 | Wulkan             |        14 |
+|       3 | Wioska Kanibali    |        14 |
+|       4 | Pieprzne pole      |        14 |
+|       5 | Chatka dziadka     |        14 |
+|       6 | Kokosowa plaza     |         1 |
+|       7 | Chatka dziadka     |         1 |
+|       8 | Wulkan             |         1 |
+|       9 | Zatoka rekinow     |         1 |
+|      10 | Pieczara tesciowej |         1 |
+|      11 | Chatka dziadka     |        16 |
+|      12 | Pieczara tesciowej |        16 |
+|      13 | Zatoka rekinow     |        16 |
+|      14 | Wulkan             |        16 |
+|      15 | Wioska Kanibali    |        16 |
++---------+--------------------+-----------+
+15 rows in set (0.00 sec)
+
+mysql> SELECT sektor.nazwa, COUNT(etapy_wyprawy.sektor) AS ilosc_odwiedzin FROM etapy_wyprawy INNER JOIN sektor ON sektor.id_sektora = etapy_wyprawy.sektor GROUP BY sektor.nazwa;
++--------------------+-----------------+
+| nazwa              | ilosc_odwiedzin |
++--------------------+-----------------+
+| Wioska Kanibali    |               2 |
+| Pieprzne pole      |               1 |
+| Wulkan             |               3 |
+| Pieczara tesciowej |               3 |
+| Chatka dziadka     |               3 |
+| Kokosowa plaza     |               1 |
+| Zatoka rekinow     |               2 |
++--------------------+-----------------+
+7 rows in set (0.00 sec)
+
