@@ -1,0 +1,60 @@
+mysql> SELECT nazwa, CASE WHEN idKreatury = id_uczestnika THEN "bral udzial w wyprawie" ELSE "nie bral udzialu w wypr
+awie" END FROM kreatura INNER JOIN uczestnicy ON kreatura.idKreatury = uczestnicy.id_uczestnika;
++----------------------------+-----------------------------------------------------------------------------------------------------------+
+| nazwa                      | CASE WHEN idKreatury = id_uczestnika THEN "bral udzial w wyprawie" ELSE "nie bral udzialu w wyprawie" END |
++----------------------------+-----------------------------------------------------------------------------------------------------------+
+| Bjorn                      | bral udzial w wyprawie                                                                                    |
+| Bjorn                      | bral udzial w wyprawie                                                                                    |
+| Khorad                     | bral udzial w wyprawie                                                                                    |
+| Birgun                     | bral udzial w wyprawie                                                                                    |
+| Astrid                     | bral udzial w wyprawie                                                                                    |
+| Ibra                       | bral udzial w wyprawie                                                                                    |
+| Bjolkolur                  | bral udzial w wyprawie                                                                                    |
+| Nemo                       | bral udzial w wyprawie                                                                                    |
+| Loko                       | bral udzial w wyprawie                                                                                    |
+| Drozd                      | bral udzial w wyprawie                                                                                    |
+| Drozd                      | bral udzial w wyprawie                                                                                    |
+| Szczeki                    | bral udzial w wyprawie                                                                                    |
+| Tesciowa                   | bral udzial w wyprawie                                                                                    |
+| Tiki                       | bral udzial w wyprawie                                                                                    |
+| Dziadek                    | bral udzial w wyprawie                                                                                    |
+| Dziadek                    | bral udzial w wyprawie                                                                                    |
+| sztuczna szczeka tesciowej | bral udzial w wyprawie                                                                                    |
+| Tesciowa dziadka           | bral udzial w wyprawie                                                                                    |
++----------------------------+-----------------------------------------------------------------------------------------------------------+
+
+
+mysql> SELECT nazwa, CHAR_LENGTH(dziennik) FROM etapy_wyprawy INNER JOIN wyprawa ON wyprawa.id_wyprawy = etapy_wyprawy.idWyprawy WHERE CHAR_LENGTH(dziennik) < 400;
++-----------------------+-----------------------+
+| nazwa                 | CHAR_LENGTH(dziennik) |
++-----------------------+-----------------------+
+| Poszukiwanie ziecia   |                    59 |
+| Poszukiwanie ziecia   |                    67 |
+| Poszukiwanie ziecia   |                   113 |
+| Poszukiwanie ziecia   |                    25 |
+| Poszukiwanie ziecia   |                    80 |
+| Polowanie na tesciowa |                    42 |
+| Polowanie na tesciowa |                    65 |
+| Polowanie na tesciowa |                    60 |
+| Polowanie na tesciowa |                    56 |
+| Polowanie na tesciowa |                    87 |
+| Nakarm kanibala       |                   153 |
+| Nakarm kanibala       |                    71 |
+| Nakarm kanibala       |                   100 |
+| Nakarm kanibala       |                    49 |
+| Nakarm kanibala       |                    66 |
++-----------------------+-----------------------+
+
+mysql> SELECT uczestnicy.id_wyprawy, ((SUM(waga) * SUM(ilosc)) / COUNT(id_uczestnika)) FROM zasob INNER JOIN wyprawa
+ON zasob.dataPozyskania = wyprawa.data_rozpoczecia INNER JOIN uczestnicy ON wyprawa.id_wyprawy = uczestnicy.id_wypraw
+y GROUP BY uczestnicy.id_wyprawy;
+Empty set (0.00 sec)
+
+mysql> SELECT kreatura.nazwa, DATEDIFF(wyprawa.data_rozpoczecia, dataUr) FROM kreatura INNER JOIN wyprawa ON wyprawa.kierownik = kreatura.idKreatury;
++----------+--------------------------------------------+
+| nazwa    | DATEDIFF(wyprawa.data_rozpoczecia, dataUr) |
++----------+--------------------------------------------+
+| Bjorn    |                                      11082 |
+| Tesciowa |                                      16376 |
+| Dziadek  |                                      20279 |
++----------+--------------------------------------------+
